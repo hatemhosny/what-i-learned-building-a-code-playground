@@ -7,6 +7,7 @@
   "livecodes@0.2.0": "https://jspm.dev/livecodes@0.2.0",
   "uuid": "https://jspm.dev/uuid",
   "react": "https://jspm.dev/react",
+  "localforage": "https://jspm.dev/localforage",
   "underscore": "https://jspm.dev/underscore"
 }}</script></head><body><div class="reveal">
   <div class="slides">
@@ -21,16 +22,16 @@
       <section data-visibility="!hidden" data-title="Agenda" class="align-left">
         <h2>Agenda</h2>
         <ul>
-          <li>Introduction</li>
-          <li>Challenges and Decisions
+          <li class="fragment">Project</li>
+          <li class="fragment">Challenges
             <ul>
-              <li>Web Platform</li>
-              <li>Client-Server Interface</li>
-              <li>Performance</li>
-              <li>Security</li>
+              <li class="fragment">Design decisions and work-arounds</li>
+              <li class="fragment">Web Standards and APIs</li>
+              <li class="fragment">Performance</li>
+              <li class="fragment">Security</li>
             </ul>
           </li>
-          <li>Conclusions</li>
+          <li class="fragment">Conclusions</li>
         </ul>
       </section>
 
@@ -230,19 +231,14 @@
         </textarea>
       </section>
 
-      <section data-visibility="!hidden" data-title="Languages: [LiveCodes] Go">
-          <h2>Demo: Go</h2>
-          <div id="go-demo" class="livecodes" data-height="70vh"></div>
+      <section data-visibility="!hidden" data-title="Languages: [LiveCodes] Ruby">
+          <h2>Demo: Ruby</h2>
+          <div id="ruby-demo" class="livecodes" data-height="70vh"></div>
       </section>
 
       <section data-visibility="!hidden" data-title="Languages: [LiveCodes] PHP">
           <h2>Demo: PHP</h2>
           <div id="php-demo" class="livecodes" data-height="70vh"></div>
-      </section>
-
-      <section data-visibility="!hidden" data-title="Languages: [LiveCodes] Pyodide">
-          <h2>Demo: Python (Pyodide)</h2>
-          <div id="pyodide-demo" class="livecodes" data-height="70vh"></div>
       </section>
     </section>
 
@@ -335,6 +331,132 @@
           ![regex problem](https://hatemhosny.github.io/livecodes-assets/assets/169584838629216468023216/regex-meme.jpg)
         </textarea>
       </section>
+    </section>
+
+    <section data-visibility="!hidden" data-title="Challenge: No Backend">
+      <section data-visibility="!hidden" data-title="Challenge: No Backend">
+        <h2 class="title">No Backend!</h2>
+      </section>
+
+      <section data-visibility="!hidden" data-title="No Backend" class="align-left">
+        <h2>No Backend!</h2>
+        <ul>
+          <li class="fragment">Save</li>
+          <li class="fragment">Deploy</li>
+          <li class="fragment">Local assets</li>
+          <li class="fragment">Sync</li>
+          <li class="fragment">Share</li>
+          <li class="fragment">Broadcast</li>
+        </ul>
+      </section>
+
+      <section data-visibility="!hidden" data-title="No Backend: Browser Storage" class="align-left">
+        <h2>Browser Storage</h2>
+        <ul>
+          <li class="fragment2">Cookies</li>
+          <li class="fragment2">sessionStorage</li>
+          <li class="fragment2">localStorage</li>
+          <li class="fragment2">IndexedDB</li>
+          <li class="fragment2 strike">Web SQL</li>
+          <li class="fragment2">Cache API</li>
+        </ul>
+      </section>
+
+      <section data-visibility="!hidden" data-title="No Backend: localforage" data-markdown="">
+        <textarea data-template="">          ## localforage
+        </textarea>
+      </section>
+
+      <section data-visibility="!hidden" data-title="No Backend: [Code] localforage" data-markdown="">
+        <textarea data-template="">          ## localforage
+          ```js []
+          import localforage from 'localforage';
+
+          localforage.setDriver([localforage.INDEXEDDB]);
+
+          await localforage.setItem('myData', {mykey: 'myvalue'});
+
+          const value = await localforage.getItem('myData');
+          console.log(value);
+
+          await localforage.removeItem('myData');
+          ```
+        </textarea>
+      </section>
+
+      <section data-visibility="!hidden" data-title="No Backend: Persistent Storage" data-markdown="">
+        <textarea data-template="">          ## Persistent Storage
+        </textarea>
+      </section>
+
+      <section data-visibility="!hidden" data-title="No Backend: [Code] Persistent Storage" data-markdown="">
+        <textarea data-template="">          ## Persistent Storage
+          ```js []
+          if (navigator.storage &amp;&amp; navigator.storage.persist) {
+            const isPersisted = await navigator.storage.persist();
+            console.log(`Persisted storage granted: ${isPersisted}`);
+          }
+          ```
+        </textarea>
+      </section>
+
+      <section data-visibility="!hidden" data-title="No Backend: Services" class="align-left">
+        <h2>Services</h2>
+        <ul>
+          <li class="fragment">CDNs
+            <ul>
+              <li class="fragment">npm packages</li>
+              <li class="fragment">ES modules for npm packages</li>
+              <li class="fragment">GitHub files</li>
+              <li class="fragment">Deno modules</li>
+            </ul>
+          </li>
+          <li class="fragment">GitHub Pages
+            <ul>
+              <li class="fragment">Push to <code class="inline">gh-pages</code> branch</li>
+            </ul>
+          </li>
+          <li class="fragment">Share service: dpaste</li>
+          <li class="fragment">Custom services</li>
+        </ul>
+      </section>
+
+      <section data-visibility="!hidden" data-title="No Backend: Data URLs">
+        <h2>Data URLs</h2>
+        <p class="fragment">URLs prefixed with the <code class="inline">data:</code> scheme</p>
+        <p class="fragment">Example:</p>
+        <p class="fragment"><code class="inline">data:,Hello%2C%20World%21</code></p>
+        <p class="fragment">↓</p>
+        <p class="fragment"><code class="inline">Hello, World!</code></p>
+        
+      </section>
+
+      <section data-visibility="!hidden" data-title="No Backend: [Code] Data URLs" data-markdown="">
+        <textarea data-template="">          ## Data URLs
+          ```js [1-2|4|6-7]
+          const toDataUrl = (content, type = "text/javascript") =&gt;
+            `data:${type};charset=UTF-8;base64,` + btoa(content);
+
+          const url = toDataUrl('Hello World!', 'text/html');
+
+          console.log(url);
+          //data:text/html;charset=UTF-8;base64,SGVsbG8gV29ybGQh
+          ```
+        </textarea>
+      </section>
+
+      <section data-visibility="!hidden" data-title="No Backend: Local Assets" data-markdown="">
+        <textarea data-template="">          ## Local Assets
+          ![LiveCodes Assets](https://hatemhosny.github.io/livecodes-assets/assets/169600894548216405768314/add-asset.jpg)
+        </textarea>
+      </section>
+
+      <section data-visibility="!hidden" data-title="No Backend: Local Assets" data-markdown="">
+        <textarea data-template="">          ## Local Assets
+          ![LiveCodes Assets](https://livecodes.io/docs/assets/images/assets-79f6e5f750f5b0ee13fa3e6e428f0bbb.png)
+        </textarea>
+      </section>
+
     </section>
 
     <section data-visibility="!hidden" data-title="Challenge: Avoid Breaking Changes">
@@ -579,7 +701,7 @@ importScripts("https://unpkg.com/lib/script.js");</code></pre>
         <p class="fragment">(a.k.a. Personal Preferences!)</p>
         <ul>
           <li class="fragment">"Vanilla" TypeScript</li>
-          <li class="fragment">NEVER use classes or <code class="inline">this</code>!</li>
+          <li class="fragment">I <a href="https://livecodes.io/?x=id/uajyyk8qx3q&amp;console=open" target="_blank">NEVER</a> use <a href="https://livecodes.io/?x=id/a5jehx6ieu6&amp;console=open" target="_blank">classes  or <code class="inline">this</code></a>!</li>
           <li class="fragment">Build system: Esbuild</li>
           <li class="fragment">Testing: Playwright &amp; Jest</li>
           <li class="fragment">Docs: Docusaurus</li>
@@ -613,6 +735,17 @@ importScripts("https://unpkg.com/lib/script.js");</code></pre>
       <section data-visibility="!hidden" data-title="Conclusions" class="align-left">
         <h2>Conclusions</h2>
         <ul>
+          <li class="fragment">WebAssembly</li>
+          <li class="fragment">Higher-Order Functions</li>
+          <li class="fragment">Import Maps</li>
+          <li class="fragment">Automated Releases - Versions</li>
+          <li class="fragment">Caching</li>
+          <li class="fragment">Web Workers</li>
+          <li class="fragment">Data URLs</li>
+          <li class="fragment">File Hash</li>
+          <li class="fragment">Sandboxed Iframes</li>
+        </ul>
+        <ul>
           <li class="fragment">Open-Source = ❤️</li>
           <li class="fragment">Keep learning and building</li>
         </ul>
@@ -624,6 +757,8 @@ importScripts("https://unpkg.com/lib/script.js");</code></pre>
           <li>https://webassembly.org/</li>
           <li>https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap</li>
           <li>https://github.com/WICG/import-maps</li>
+          <li>https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage</li>
+          <li>https://web.dev/persistent-storage/</li>
           <li>https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers</li>
           <li>https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm</li>
           <li>https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs</li>

@@ -27,7 +27,7 @@ h2 {
 }
 
 code.inline {
-  background-color: #ddd;
+  background-color: #f3f1f1;
   border: 1px solid #666;
   border-radius: 5px;
   padding: 3px;
@@ -57,6 +57,10 @@ img {
 .error {
   color: red;
   background-color: rgb(255, 229, 229);
+}
+
+.strike {
+  text-decoration: line-through;
 }
 
 .small {

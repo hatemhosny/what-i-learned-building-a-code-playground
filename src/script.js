@@ -35,19 +35,14 @@ createPlayground('#react-demo', {
   template: 'react',
 })
 
-createPlayground('#go-demo', {
+createPlayground('#ruby-demo', {
   ...liveCodesOptions,
-  template: 'go',
+  template: 'ruby',
 })
 
 createPlayground('#php-demo', {
   ...liveCodesOptions,
   template: 'php',
-})
-
-createPlayground('#pyodide-demo', {
-  ...liveCodesOptions,
-  template: 'pyodide',
 })
 
 createPlayground('#modules-demo', {

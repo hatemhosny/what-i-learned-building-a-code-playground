@@ -2,26 +2,30 @@
   visibility: hidden;
 }
 
-.align-left {
-  text-align: left !important;
-}
-
 h2 {
-  margin-top: -1em !important;
-  margin-bottom: 1em !important;
-  text-transform: capitalize !important;
+  text-transform: none !important;
   font-family: "Courier New", Courier, monospace !important;
   text-align: center !important;
+
+  &::after {
+    content: "";
+    display: block;
+    width: 50%;
+    height: 0.2em !important;
+    margin: auto;
+    background-image: url(https://hatemhosny.github.io/livecodes-assets/assets/169573988532230478220473/underline.png);
+    background-repeat: no-repeat;
+  }
+
+  &.title {
+    margin-top: calc(50vh - 0.5em) !important;
+
+    &::after {
+      display: none;
+    }
+  }
 }
-h2::after {
-  content: "";
-  display: block;
-  width: 50%;
-  height: 0.2em !important;
-  margin: auto;
-  background-image: url(https://hatemhosny.github.io/livecodes-assets/assets/169573988532230478220473/underline.png);
-  background-repeat: no-repeat;
-}
+
 code.inline {
   background-color: #ddd;
   border: 1px solid #666;
@@ -30,19 +34,38 @@ code.inline {
   font-size: 0.9em;
 }
 
+img {
+  max-height: 90vh;
+}
+
+.align-left {
+  text-align: left !important;
+}
+
+.align-middle {
+  height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.indent {
+  margin-left: 2em;
+}
+
+.error {
+  color: red;
+  background-color: rgb(255, 229, 229);
+}
+
+.small {
+  font-size: 0.6em !important;
+}
+
 .home {
-  position: relative;
-  padding: 0 !important;
-  margin: 0 !important;
-
-  h2 {
-    background: none;
-    margin: unset !important;
-    text-align: center !important;
-
-    &::after {
-      display: none;
-    }
+  h2::after {
+    display: none;
   }
 
   .author {
@@ -50,16 +73,6 @@ code.inline {
       "Lucida Sans", Arial, sans-serif;
     font-size: 2rem;
     text-align: right;
-  }
-
-  #home-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    opacity: 0.08;
   }
 
   #think-learn {
@@ -74,9 +87,9 @@ code.inline {
 
 .livecodes {
   height: 65vh !important;
-  font-size: 40px !important;
   transform: scale(1.2) !important;
   margin-left: 10%;
+  margin-top: 1.5em;
   max-width: 80%;
 
   iframe {
@@ -86,19 +99,8 @@ code.inline {
   }
 }
 
-.error {
-  color: red;
-  background-color: rgb(255, 229, 229);
-}
-
-.small {
-  font-size: 0.6em !important;
-}
-
-.demo-iframe {
-  height: 65vh;
-  width: 80%;
-  transform: scale(1.2);
-  border: 0;
-  overflow: hidden !important;
+.edit-slides {
+  margin-top: 3em !important;
+  margin-bottom: -3em !important;
+  width: 100% !important;
 }

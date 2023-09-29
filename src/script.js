@@ -14,8 +14,9 @@ let deck = new Reveal({
 });
 
 deck.initialize({
-  slideNumber: "c/t",
+  // slideNumber: "c/t",
   transition: "fade",
+  center: false,
   mermaid: {
     flowchart: {
       htmlLabels: false,
@@ -27,13 +28,17 @@ document.querySelector('.reveal').style.visibility = 'visible';
 
 const liveCodesOptions = {
   appUrl: 'https://v14.livecodes.io',
-  loading: 'eager',
 }
 
-// createPlayground('#pyodide-demo', {
-//   ...liveCodesOptions,
-//   template: 'pyodide',
-// })
+createPlayground('#react-demo', {
+  ...liveCodesOptions,
+  template: 'react',
+})
+
+createPlayground('#pyodide-demo', {
+  ...liveCodesOptions,
+  template: 'pyodide',
+})
 
 createPlayground('#modules-demo', {
   ...liveCodesOptions,

